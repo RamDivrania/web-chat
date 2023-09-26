@@ -11,7 +11,7 @@ import AddIcon from "@material-ui/icons/Add";
 import axios from "axios";
 import React, { useCallback, useContext, useState } from "react";
 import { AuthContext } from "../context/auth-context";
-import { useRouter } from "../hooks/useRouter";
+import useAuth from "../hooks/useAuth";
 import { ENDPOINT } from "../utils/constants";
 
 const ListView = ({
@@ -24,7 +24,7 @@ const ListView = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const [users, setUsers] = useState([]);
   const authContext = useContext(AuthContext);
-  const router = useRouter();
+  const auth = useAuth();
   const handleClick = (e) => {
     getAvailableUsers();
     setAnchorEl(e.currentTarget);
@@ -45,7 +45,7 @@ const ListView = ({
       currentUser: currentUser?.userId,
     };
     await axios.post(`${ENDPOINT}users/add_user_channel`, payload);
-    router.push("/authcheck");
+    auth.logout();
     handleClose();
   };
 
